@@ -6,16 +6,17 @@ const moment = require('moment-business-days')
 require('dotenv').config()
 const alpaca = new Alpaca({ paper: false })
 
-async function downloadBars(stock = 'AAPL', fromDate = '2020-07-16T09:30:00-04:00', delaySeconds = 5000) {
-	let current_date = moment(fromDate)
+async function downloadBars(stock = 'AAPL', from_date = '2020-07-16T09:30:00-04:00', to_date = '2020-07-16T09:30:00-04:00', delaySeconds = 5000) {
+	let current_date = moment(from_date)
 	let end_date = ''
-	let total_records = 1
 	let promises = []
 
 	const csvFilePath = `./data/${stock}.csv`
 	fs.existsSync(csvFilePath) && fs.unlinkSync(csvFilePath) // temporary: delete file
 
-	while (total_records > 0 && current_date < moment()) {
+	while (current_date < moment(to_date)) {
+		console.log('downloading for current_date', current_date.format('YYYY-MM-DDTHH:mm:ss-04:00'))
+
 		end_date = moment(current_date).businessAdd(1, 'day')
 
 		await new Promise((resolve) => {
@@ -27,7 +28,6 @@ async function downloadBars(stock = 'AAPL', fromDate = '2020-07-16T09:30:00-04:0
 				})
 				.then((barset) => {
 					const stock_bars = barset[stock]
-					total_records = stock_bars.length
 
 					const isNewFile = !fs.existsSync(csvFilePath)
 					const ws = fs.createWriteStream(csvFilePath, { flags: 'a' })

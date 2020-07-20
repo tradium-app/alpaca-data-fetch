@@ -1,6 +1,8 @@
 const { downloadBars } = require('./stock-downloader')
 
 ;(async () => {
-	await downloadBars('TSLA', '2020-07-16T09:30:00-04:00', 5000)
+	await downloadBars('AAPL', '2015-01-02T09:30:00-04:00', '2020-06-19T09:30:00-04:00', 1000).catch((err) => {
+		console.log('printing err', err)
+	})
 	console.log('download completed')
 })()

@@ -17,7 +17,7 @@ async function downloadBars(stock = 'AAPL', from_date = '2020-07-16T09:30:00-04:
 	while (current_date < moment(to_date)) {
 		console.log('downloading for current_date', current_date.format('YYYY-MM-DDTHH:mm:ss-04:00'))
 
-		end_date = moment(current_date).businessAdd(1, 'day')
+		end_date = moment(current_date).businessAdd(14, 'day')
 
 		await new Promise((resolve) => {
 			alpaca

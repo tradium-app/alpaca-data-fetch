@@ -65,4 +65,4 @@ android/app/debug/*
 .env
 
 # data files
-/data
+# /data

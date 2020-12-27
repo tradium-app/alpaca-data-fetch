@@ -6,7 +6,7 @@ const moment = require('moment-business-days')
 require('dotenv').config()
 const alpaca = new Alpaca({ paper: false })
 
-async function downloadBars(stock = 'AAPL', from_date = '2020-07-16T09:30:00-04:00', to_date = '2020-07-16T09:30:00-04:00', delaySeconds = 5) {
+async function downloadBars(stock = 'AAPL', from_date = '2020-07-16T09:30:00-04:00', to_date = '2020-07-16T09:30:00-04:00', delaySeconds = 5, timeframe='5Min') {
 	let current_date = moment(from_date)
 	let end_date = ''
 	let promises = []
@@ -21,7 +21,7 @@ async function downloadBars(stock = 'AAPL', from_date = '2020-07-16T09:30:00-04:
 
 		await new Promise((resolve) => {
 			alpaca
-				.getBars('5Min', stock, {
+				.getBars(timeframe, stock, {
 					limit: 1000,
 					start: current_date.format('YYYY-MM-DDTHH:mm:ss-04:00'),
 					end: end_date.format('YYYY-MM-DDTHH:mm:ss-04:00'),
